@@ -3,4 +3,5 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in sustainable_seafood.gemspec
 gemspec
 
-gem "rake", "~> 12.0"
+#Take this out since now included in gemspec?
+#gem "rake", "~> 12.0"
