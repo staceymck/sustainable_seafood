@@ -1,8 +1,8 @@
 # SustainableSeafood
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/sustainable_seafood`. To experiment with that code, run `bin/console` for an interactive prompt.
+This CLI app helps users make informed seafood choices by providing data on fishing rates, bycatch, population status, and other sustainability-related information for over 100 marine species. Users can find information on both wild and farmed species.
 
-TODO: Delete this and the text above, and describe your gem
+Data is pulled via an API from FishWatch, the U.S. national database for sustainable seafood.
 
 ## Installation
 
@@ -22,7 +22,9 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Type the following in your terminal and follow the instructions:
+
+    $ sustainable_seafood
 
 ## Development
 
@@ -32,7 +34,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/sustainable_seafood. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/sustainable_seafood/blob/master/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/[staceymck]/sustainable_seafood. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/sustainable_seafood/blob/master/CODE_OF_CONDUCT.md).
 
 
 ## License
