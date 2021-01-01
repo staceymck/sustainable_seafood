@@ -1,0 +1,2 @@
+class SustainableSeafood::API
+end
