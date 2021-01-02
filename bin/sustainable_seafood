@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require_relative '../lib/sustainable_seafood'
+require_relative '../lib/sustainable_seafood' #loads environment
 
 SustainableSeafood::CLI.new.call
