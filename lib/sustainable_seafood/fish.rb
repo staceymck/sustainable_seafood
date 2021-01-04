@@ -3,7 +3,7 @@ class SustainableSeafood::Fish
 
     def initialize(fish_details)
         self.name = fish_details["Species Name"]
-        self.aliases = fish_details["Species Aliases"]
+        self.aliases = fish_details["Species Aliases"].scan(/(?<=">).+?(?=<)/)
         self.quote = fish_details["Quote"]
         self.harvest_type = fish_details["Harvest Type"]
     end
