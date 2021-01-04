@@ -26,7 +26,30 @@ class SustainableSeafood::CLI
     end
 
     def validate_input_main_menu
-        @input.to_i.between?(1...4) || @input.downcase == "exit"
+        if @input.to_i.between?(1...4)
+
+            case @input
+            when "1"
+                puts #sorted SustainableSeafood::Fish.all - listed by name
+            when "2"
+                puts #sorted SustainableSeafood::Farmed.all - listed by name
+            when "3"
+                puts #sorted SustainableSeafood::Wild.all - listed by name
+            when "4"
+                puts "Please enter the name of the species you'd like to look up:"
+                get_input 
+                #validate here or validate within the find_by_name_or_alias method?
+                find_by_name_or_alias(@input)
+            end 
+
+        elsif @input.downcase == "exit"
+            exit_program
+        else
+            puts "Input not recognized. Please enter 1, 2, 3, 4 or exit."
+            get_input
+        end
+
+
     end
 
     def exit_program #maybe clear the terminal screen using system "clear"
