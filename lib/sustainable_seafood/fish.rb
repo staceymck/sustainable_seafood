@@ -7,7 +7,7 @@ class SustainableSeafood::Fish
         self.aliases = fish_details["Species Aliases"].scan(/(?<=">).+?(?=<)/)
         self.quote = fish_details["Quote"]
         self.harvest_type = fish_details["Harvest Type"]
-        @@all << self
+        @@all << self #if saving here to @@all, can't also save in Wild and Farmed to their own @@all variables because it creates duplicates
     end
 
     def self.all #Would need custom self.all methods in the Wild and Farmed classes that select the wild and farmed fish from the Fish.all collection 
