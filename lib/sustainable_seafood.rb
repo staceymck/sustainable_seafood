@@ -7,6 +7,9 @@ require_relative "./sustainable_seafood/fish_types/wild"
 require_relative "./sustainable_seafood/fish_types/farmed"
 require_relative "./sustainable_seafood/api"
 require_relative "./sustainable_seafood/cli" 
+require "net/http"
+require "open-uri"
+require 'json'
 #added section ends here
 
 module SustainableSeafood
