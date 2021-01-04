@@ -4,8 +4,7 @@ class SustainableSeafood::API
     def self.get_fish
         uri = URI.parse(URL)
         response = Net::HTTP.get_response(uri)
-        response.body
-        JSON.parse(response_body)
+        JSON.parse(response.body)
     end
 
     def self.make_fish #when is the best time to call this? and where? Does it make sense to store it in the Fish class? 
@@ -17,6 +16,7 @@ class SustainableSeafood::API
             end
         end
     end
+end
 
     # Create a separate method for dividing the fish, or do it all in the make_fish method since
     # this way requires instance variables? 
@@ -32,5 +32,5 @@ class SustainableSeafood::API
     #         end
     #     end
     # end
-end
+
 
