@@ -12,11 +12,12 @@ class SustainableSeafood::Fish
     end
 
     def self.all #Would need custom self.all methods in the Wild and Farmed classes that select the wild and farmed fish objs from the Fish.all collection 
+        SustainableSeafood::API.make_fish if @@all.empty?
         @@all
     end
 
     def self.sort_by_name
-        sorted = all.sort_by {|fish| fish.name}
+        all.sort_by {|fish| fish.name}
     end
 
     def find_by_name_or_alias(fish_name)
