@@ -15,10 +15,13 @@ class SustainableSeafood::Fish
         @@all
     end
 
-    #sort method
+    def self.sort_by_name
+        sorted = all.sort_by {|fish| fish.name}
+    end
 
-    #find_by_name_or_alias(fish_name)
+    def find_by_name_or_alias(fish_name)
         #validate the input 
         #return fish details
+    end
       
 end
