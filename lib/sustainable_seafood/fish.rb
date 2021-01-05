@@ -3,10 +3,10 @@ class SustainableSeafood::Fish
     @@all = []
 
     def initialize(fish_details) #fish_details represents a single fish element from the hash returned by the get_fish API class method
-        self.name = fish_details["Species Name"]
-        self.aliases = fish_details["Species Aliases"]
-        self.quote = fish_details["Quote"]
-        self.harvest_type = fish_details["Harvest Type"]
+        self.name = fish_details["Species Name"].strip
+        self.aliases = fish_details["Species Aliases"].strip
+        self.quote = fish_details["Quote"].strip
+        self.harvest_type = fish_details["Harvest Type"].strip
         @@all << self #if saving here to @@all, can't also save in Wild and Farmed to their own @@all variables because it creates duplicates
         #why doesn't using self.class.all << self here allow the #all methods to work? They all return 0
     end
@@ -29,9 +29,17 @@ class SustainableSeafood::Fish
         #return fish details
     end
 
+    def format_apostrophes(string)
+        string.gsub("&#039;", "'")
+    end
+
     def aliases=(aliases)
         alias_array = aliases.scan(/(?<=">).+?(?=<)/)
-        @aliases = alias_array.map {|alias_name| alias_name.gsub("&#039;", "'")} 
+        @aliases = alias_array.map {|alias_name| format_apostrophes(alias_name)} 
     end
-      
+
+    def quote=(quote)
+        @quote = format_apostrophes(quote)
+    end
+    
 end
