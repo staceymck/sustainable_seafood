@@ -8,13 +8,14 @@ class SustainableSeafood::CLI
     end
 
     def display_main_menu
-        puts "To access sustainablity-related info for a specific marine species, 
+        puts "To access sustainability-related info for a specific marine species, 
         enter the species name or select an option below to view species lists.
+
         ><{{{{º>  Enter 'all' to see all 113 species
         ><{{{{º>  Enter 'farmed' to see only farmed species
         ><{{{{º>  Enter 'wild' to see only wild species
         
-        Enter 'exit' at anytime to exit the program."
+        Enter 'exit' at any time to exit the program."
     end
 
     def get_user_input
@@ -32,8 +33,11 @@ class SustainableSeafood::CLI
                     selected_list = SustainableSeafood::Farmed
                 when "Wild"
                     selected_list = SustainableSeafood::Wild
-                else
+                when "Exit"
                     exit_program
+                else 
+                    display_fish_details(input)
+                    puts "fish info"
                 end
                 
                 display_list_header(input)
@@ -41,40 +45,16 @@ class SustainableSeafood::CLI
                 puts ""
                 puts "To see info about a specific species, please enter the species' number, 
                 or type 'main' to return to the main menu:"
-                species_details_menu(selected_list.all)
+                species_details_menu(selected_list)
 
             else
                 invalid_input
                 main_menu_actions
-            end
-
-            # case input
-            # when "All"
-            #     display_list_header(input)
-            #     display_list(SustainableSeafood::Fish)
-            #     species_details_menu(SustainableSeafood::Fish.all)
-            # when "Farmed"
-            #     display_list_header(input)
-            #     display_list(SustainableSeafood::Farmed)
-            #     species_details_menu(SustainableSeafood::Farmed.all)
-            # when "Wild"
-            #     display_list_header(input)
-            #     display_list(SustainableSeafood::Wild)
-            #     species_details_menu(SustainableSeafood::Wild.all)
-            # when /exit/i
-                
-            # else
-            #     # if find_by_name_or_alias(input)
-            #     #     #display fish details
-            #     # else
-            #         invalid_input
-            #         main_menu_actions
-            #     #end
-            # end  
+            end     
     end
 
     def valid_main_menu_choice?(input)
-        ["All", "Farmed", "Wild", "Exit"].include?(input)
+        ["All", "Farmed", "Wild", "Exit"].include?(input) || SustainableSeafood::Fish.find_by_name_or_alias(input)
     end
 
     def display_list_header(keyword)
@@ -96,10 +76,11 @@ class SustainableSeafood::CLI
         cols.first.zip(*cols[1..-1]).each{|row| puts row.map{|fish| fish ? fish.ljust(35) : '     '}.join("  ") } #the zip adds in nil values, which I don't want because I get an error for ljust on nil class
     end
 
-    def species_details_menu(collection)
+    def species_details_menu(fish_collection)
         input = gets.strip
-        if input.to_i.between?(1, collection.length)
-            puts "info here" #return fish details
+        if input.to_i.between?(1, fish_collection.all.length)
+            fish_name = id_species(input, fish_collection) #the only time this is needed before displaying fish details
+            display_fish_details(fish_name) #can I make @input a variable and pass it around?
         elsif input == "main"
             display_main_menu
             main_menu_actions
@@ -107,8 +88,19 @@ class SustainableSeafood::CLI
             exit_program
         else
             invalid_input
-            species_details_menu(collection)
+            species_details_menu(fish_collection)
         end
+    end
+
+    def display_fish_details(fish_name)
+        
+    end
+
+    def id_species(input, fish_collection = nil) #since column display numbers don't correlate to the actual order of fish in Fish.all, 
+        #I need a special way to id the user's choice based on the number they enter | returns species name
+        formatted_list = display_list(fish_collection).flatten.compact #flatten into non-nested array; compact removes nil values at end
+        user_choice = formatted_list.find {|numbered_species| numbered_species.include?(input)} #returns in form like "7. Sablefish"  
+        selected_species_name = user_choice.gsub(/^\d.\s/, "")
     end
 
     def exit_program #maybe clear the terminal screen using system "clear"
