@@ -31,7 +31,7 @@ class SustainableSeafood::Fish
 
     def aliases=(aliases)
         alias_array = aliases.scan(/(?<=">).+?(?=<)/)
-        alias_array.map {|alias_name| alias_name.gsub("&#039;", "'")} 
+        @aliases = alias_array.map {|alias_name| alias_name.gsub("&#039;", "'")} 
     end
       
 end
