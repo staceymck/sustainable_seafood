@@ -9,10 +9,10 @@ class SustainableSeafood::CLI
 
     def display_main_menu
         puts "To access sustainablity-related info for a specific marine species, 
-        enter the species name or select a number below to view species lists.
-        1. See list of all 113 species
-        2. See only farmed fish
-        3. See only wild fish
+        enter the species name or select an option below to view species lists.
+        ><{{{{º>  Enter 'all' to see all 113 species
+        ><{{{{º>  Enter 'farmed' to see only farmed species
+        ><{{{{º>  Enter 'wild' to see only wild species
         
         Enter 'exit' at anytime to exit the program."
     end
@@ -22,19 +22,19 @@ class SustainableSeafood::CLI
     end
 
     def main_menu_actions
-            input = get_user_input
+            input = get_user_input.capitalize
 
             case input
-            when "1"
-                puts ""
-                puts "---------- All Species ---------- "
-                puts ""
+            when "All"
+                header(input)
                 display_list(SustainableSeafood::Fish)
                 species_details_menu(SustainableSeafood::Fish.all)
-            when "2"
+            when "Farmed"
+                header(input)
                 display_list(SustainableSeafood::Farmed)
                 species_details_menu(SustainableSeafood::Farmed.all)
-            when "3"
+            when "Wild"
+                header(input)
                 display_list(SustainableSeafood::Wild)
                 species_details_menu(SustainableSeafood::Wild.all)
             when /exit/i
@@ -47,6 +47,12 @@ class SustainableSeafood::CLI
                     main_menu_actions
                 #end
             end  
+    end
+
+    def header(keyword)
+        puts ""
+        puts "---------- #{keyword} Species ---------- "
+        puts ""
     end
 
     def invalid_input
