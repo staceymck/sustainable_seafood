@@ -41,7 +41,7 @@ class SustainableSeafood::CLI
                 end
                 
                 display_list_header(input)
-                display_list(selected_list)
+                display_list_in_columns(selected_list)
                 puts ""
                 puts "To see info about a specific species, please enter the species' number, 
                 or type 'main' to return to the main menu:"
@@ -68,18 +68,26 @@ class SustainableSeafood::CLI
         puts "Input not recognized. Please enter a different selection:"
     end
 
-    def display_list(fish_collection)
-        sorted_list = fish_collection.sort_by_name #returns fish objects sorted alphabetically by name
+    def create_column_contents(fish_list)
+        sorted_list = fish_list.sort_by_name #returns fish objects sorted alphabetically by name
         numbered_list = []
         sorted_list.each.with_index(1) {|fish, i| numbered_list << "#{i}. #{fish.name}"} #returns alphabetized, numbered list of fish names - ran into issue when using map at first because it changed fish instance variables
         cols = numbered_list.each_slice((numbered_list.size+2)/3).to_a #splits list of names into 3 arrays of closely equal size
-        cols.first.zip(*cols[1..-1]).each{|row| puts row.map{|fish| fish ? fish.ljust(35) : '     '}.join("  ") } #the zip adds in nil values, which I don't want because I get an error for ljust on nil class
+        zip_columns = cols.first.zip(*cols[1..-1])
     end
 
-    def species_details_menu(fish_collection)
+    def display_list_in_columns(fish_list)
+        create_column_contents(fish_list).each{|row| puts row.map{|fish| fish ? fish.ljust(35) : '     '}.join("  ") } 
+        #the ternary statement checks if a list item is nil/false or not. Some may be nil as a result of the
+        #way the create_column_contents method works. If nil, then empty string is printed.
+
+        ### THESE COLUMNS ARE NOT RESPONSIVE, so terminal window must be certain width ####
+    end
+
+    def species_details_menu(fish_list)
         input = gets.strip
-        if input.to_i.between?(1, fish_collection.all.length)
-            fish_name = id_species(input, fish_collection) #the only time this is needed before displaying fish details
+        if input.to_i.between?(1, fish_list.all.length)
+            fish_name = id_species(input, fish_list) 
             display_fish_details(fish_name) #can I make @input a variable and pass it around?
         elsif input == "main"
             display_main_menu
@@ -88,19 +96,19 @@ class SustainableSeafood::CLI
             exit_program
         else
             invalid_input
-            species_details_menu(fish_collection)
+            species_details_menu(fish_list)
         end
     end
 
     def display_fish_details(fish_name)
-        
+        puts fish_name
     end
 
-    def id_species(input, fish_collection = nil) #since column display numbers don't correlate to the actual order of fish in Fish.all, 
+    def id_species(input, fish_list) #since column display numbers don't correlate to the actual order of fish in Fish.all, 
         #I need a special way to id the user's choice based on the number they enter | returns species name
-        formatted_list = display_list(fish_collection).flatten.compact #flatten into non-nested array; compact removes nil values at end
+        formatted_list = create_column_contents(fish_list).flatten.compact #flatten into non-nested array; compact removes nil values at end - this prints the list again
         user_choice = formatted_list.find {|numbered_species| numbered_species.include?(input)} #returns in form like "7. Sablefish"  
-        selected_species_name = user_choice.gsub(/^\d.\s/, "")
+        selected_species_name = user_choice.gsub(/^\d+.\s/, "").strip #remove the number and padding added for column formatting
     end
 
     def exit_program #maybe clear the terminal screen using system "clear"
