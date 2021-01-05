@@ -24,32 +24,60 @@ class SustainableSeafood::CLI
     def main_menu_actions
             input = get_user_input.capitalize
 
-            case input
-            when "All"
-                header(input)
-                display_list(SustainableSeafood::Fish)
-                species_details_menu(SustainableSeafood::Fish.all)
-            when "Farmed"
-                header(input)
-                display_list(SustainableSeafood::Farmed)
-                species_details_menu(SustainableSeafood::Farmed.all)
-            when "Wild"
-                header(input)
-                display_list(SustainableSeafood::Wild)
-                species_details_menu(SustainableSeafood::Wild.all)
-            when /exit/i
-                exit_program
+            if valid_main_menu_choice?(input)
+                case input 
+                when "All" 
+                    selected_list = SustainableSeafood::Fish
+                when "Farmed"
+                    selected_list = SustainableSeafood::Farmed
+                when "Wild"
+                    selected_list = SustainableSeafood::Wild
+                else
+                    exit_program
+                end
+                
+                display_list_header(input)
+                display_list(selected_list)
+                puts ""
+                puts "To see info about a specific species, please enter the species' number, 
+                or type 'main' to return to the main menu:"
+                species_details_menu(selected_list.all)
+
             else
-                # if find_by_name_or_alias(input)
-                #     #display fish details
-                # else
-                    invalid_input
-                    main_menu_actions
-                #end
-            end  
+                invalid_input
+                main_menu_actions
+            end
+
+            # case input
+            # when "All"
+            #     display_list_header(input)
+            #     display_list(SustainableSeafood::Fish)
+            #     species_details_menu(SustainableSeafood::Fish.all)
+            # when "Farmed"
+            #     display_list_header(input)
+            #     display_list(SustainableSeafood::Farmed)
+            #     species_details_menu(SustainableSeafood::Farmed.all)
+            # when "Wild"
+            #     display_list_header(input)
+            #     display_list(SustainableSeafood::Wild)
+            #     species_details_menu(SustainableSeafood::Wild.all)
+            # when /exit/i
+                
+            # else
+            #     # if find_by_name_or_alias(input)
+            #     #     #display fish details
+            #     # else
+            #         invalid_input
+            #         main_menu_actions
+            #     #end
+            # end  
     end
 
-    def header(keyword)
+    def valid_main_menu_choice?(input)
+        ["All", "Farmed", "Wild", "Exit"].include?(input)
+    end
+
+    def display_list_header(keyword)
         puts ""
         puts "---------- #{keyword} Species ---------- "
         puts ""
@@ -69,8 +97,6 @@ class SustainableSeafood::CLI
     end
 
     def species_details_menu(collection)
-        puts "To see info about a specific species, please enter the species' number,
-        or type 'main' to return to the main menu:"
         input = gets.strip
         if input.to_i.between?(1, collection.length)
             puts "info here" #return fish details
@@ -81,6 +107,7 @@ class SustainableSeafood::CLI
             exit_program
         else
             invalid_input
+            species_details_menu(collection)
         end
     end
 
