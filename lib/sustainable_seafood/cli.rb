@@ -1,3 +1,4 @@
+require 'pry'
 class SustainableSeafood::CLI
 
     def call
@@ -22,16 +23,20 @@ class SustainableSeafood::CLI
 
     def main_menu_actions
             input = get_user_input
+
             case input
             when "1"
-                puts #sorted SustainableSeafood::Fish.all - listed by name
-                species_details_menu
+                puts ""
+                puts "---------- All Species ---------- "
+                puts ""
+                display_list(SustainableSeafood::Fish)
+                species_details_menu(SustainableSeafood::Fish.all)
             when "2"
-                puts #sorted SustainableSeafood::Farmed.all - listed by name
-                species_details_menu
+                display_list(SustainableSeafood::Farmed)
+                species_details_menu(SustainableSeafood::Farmed.all)
             when "3"
-                puts  #sorted SustainableSeafood::Wild.all - listed by name
-                species_details_menu
+                display_list(SustainableSeafood::Wild)
+                species_details_menu(SustainableSeafood::Wild.all)
             when /exit/i
                 exit_program
             else
@@ -49,10 +54,28 @@ class SustainableSeafood::CLI
         puts "Input not recognized. Please enter a different selection:"
     end
 
-    def species_details_menu
-        #collects user input and validates it against length of list
-        #if invalid, asks for input again and gives opportunity to return to main menu
-        #if valid, returns details about the fish
+    def display_list(fish_collection)
+        sorted_list = fish_collection.sort_by_name #returns fish objects sorted alphabetically by name
+        numbered_list = []
+        sorted_list.each.with_index(1) {|fish, i| numbered_list << "#{i}. #{fish.name}"} #returns alphabetized, numbered list of fish names - ran into issue when using map at first because it changed fish instance variables
+        cols = numbered_list.each_slice((numbered_list.size+2)/3).to_a #splits list of names into 3 arrays of closely equal size
+        cols.first.zip(*cols[1..-1]).each{|row| puts row.map{|fish| fish ? fish.ljust(35) : '     '}.join("  ") } #the zip adds in nil values, which I don't want because I get an error for ljust on nil class
+    end
+
+    def species_details_menu(collection)
+        puts "To see info about a specific species, please enter the species' number,
+        or type 'main' to return to the main menu:"
+        input = gets.strip
+        if input.to_i.between?(1, collection.length)
+            puts "info here" #return fish details
+        elsif input == "main"
+            display_main_menu
+            main_menu_actions
+        elsif input == "exit"
+            exit_program
+        else
+            invalid_input
+        end
     end
 
     def exit_program #maybe clear the terminal screen using system "clear"
@@ -60,4 +83,7 @@ class SustainableSeafood::CLI
         exit
     end
 end
+
+
+
 
