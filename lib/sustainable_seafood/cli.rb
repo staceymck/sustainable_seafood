@@ -11,9 +11,9 @@ class SustainableSeafood::CLI
         puts "To access sustainability-related info for a specific marine species, 
         enter the species name or select an option below to view species lists.
 
-        ><{{{{º>  Enter 'all' to see all 113 species
-        ><{{{{º>  Enter 'farmed' to see only farmed species
-        ><{{{{º>  Enter 'wild' to see only wild species
+        ><{{{{°>  Enter 'all' to see all 113 species
+        ><{{{{°>  Enter 'farmed' to see only farmed species
+        ><{{{{°>  Enter 'wild' to see only wild species
         
         Enter 'exit' at any time to exit the program."
     end
@@ -37,7 +37,6 @@ class SustainableSeafood::CLI
                     exit_program
                 else 
                     display_fish_details(input)
-                    puts "fish info"
                 end
                 
                 display_list_header(input)
@@ -101,7 +100,34 @@ class SustainableSeafood::CLI
     end
 
     def display_fish_details(fish_name)
-        puts fish_name
+        fish = SustainableSeafood::Fish.find_by_name(fish_name)
+        puts ""
+        puts fish.name.upcase
+        puts ""
+        puts "--------- AKA ---------"
+        puts fish.aliases
+        puts "------ ><{{{{{°> ------"
+        puts ""
+        puts fish.quote
+        puts ""
+
+        if fish.harvest_type == "farmed"
+            puts "Farming Methods: #{fish.farming_method}"
+            puts ""
+            puts "Environmental Considerations: #{fish.env_considerations}"
+            puts ""
+            puts "Feeds: #{fish.feeds}"
+        else 
+            puts "Population Status: #{fish.population}"
+            puts ""
+            puts "Habitat Impacts: #{fish.habitat_impacts}"
+            puts ""
+            puts "Fishing Rate: #{fish.fishing_rate}"
+            puts ""
+            puts "Bycatch: #{fish.bycatch}"
+        end
+        display_main_menu
+        main_menu_actions
     end
 
     def id_species(input, fish_list) #since column display numbers don't correlate to the actual order of fish in Fish.all, 
@@ -116,6 +142,8 @@ class SustainableSeafood::CLI
         exit
     end
 end
+
+
 
 
 
