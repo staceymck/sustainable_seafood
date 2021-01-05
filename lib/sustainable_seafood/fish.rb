@@ -20,7 +20,11 @@ class SustainableSeafood::Fish
         all.sort_by {|fish| fish.name}
     end
 
-    def find_by_name_or_alias(fish_name)
+    def self.find_by_name(fish_name)
+        SustainableSeafood::Fish.all.find {|fish| fish.name == fish_name}
+    end
+
+    def self.find_by_name_or_alias(fish_name)
         #validate the input 
         #return fish details
     end
