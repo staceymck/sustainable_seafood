@@ -22,7 +22,7 @@ class SustainableSeafood::Fish
     end
 
     def self.find_by_name(fish_name)
-        SustainableSeafood::Fish.all.find {|fish| fish.name == fish_name}
+        SustainableSeafood::Fish.all.find {|fish| fish.name.downcase == fish_name.downcase}
     end
 
     def self.find_by_name_or_alias(fish_name)
