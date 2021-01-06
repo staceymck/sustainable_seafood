@@ -3,8 +3,9 @@ class SustainableSeafood::Fish
     @@all = []
 
     def initialize(fish_details) #fish_details represents a single fish element from the hash returned by the get_fish API class method
+        #fish_details.each {|k, v| v.gsub("&#039;", "'") if v.is_a? String} - need a way to fix all apostrophes
         self.name = fish_details["Species Name"].strip
-        self.aliases = fish_details["Species Aliases"].strip
+        self.aliases = fish_details["Species Aliases"]
         self.quote = fish_details["Quote"].strip
         self.harvest_type = fish_details["Harvest Type"].strip
         @@all << self #if saving here to @@all, can't also save in Wild and Farmed to their own @@all variables because it creates duplicates
@@ -29,17 +30,12 @@ class SustainableSeafood::Fish
         #return fish details
     end
 
-    def format_apostrophes(string)
-        string.gsub("&#039;", "'")
-    end
+    # def format_apostrophes(fish_details)
+    #     fish_details.each {|k, v| v.gsub("&#039;", "'") if v.is_a? String}
+    # end
 
-    def aliases=(aliases)
-        alias_array = aliases.scan(/(?<=">).+?(?=<)/)
-        @aliases = alias_array.map {|alias_name| format_apostrophes(alias_name)} 
-    end
-
-    def quote=(quote)
-        @quote = format_apostrophes(quote)
-    end
-    
+    # def aliases=(aliases)
+    #     @aliases = aliases.scan(/(?<=">).+?(?=<)/)
+    #      = alias_array.map {|alias_name| format_apostrophes(alias_name)} 
+    # end
 end
