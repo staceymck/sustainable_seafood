@@ -8,14 +8,17 @@ class SustainableSeafood::CLI
     end
 
     def display_main_menu
-        puts "To access sustainability-related info for a specific marine species, 
+        puts ""
+        puts <<~HEREDOC
+        To access sustainability-related info for a specific marine species, 
         enter the species name or select an option below to view species lists.
 
-        ><{{{{°>  Enter 'all' to see all 113 species
-        ><{{{{°>  Enter 'farmed' to see only farmed species
-        ><{{{{°>  Enter 'wild' to see only wild species
+            ><{{{{°>  Enter 'all' to see all 113 species
+            ><{{{{°>  Enter 'farmed' to see only farmed species
+            ><{{{{°>  Enter 'wild' to see only wild species
         
-        Enter 'exit' at any time to exit the program."
+        Enter 'exit' at any time to exit the program.
+        HEREDOC
     end
 
     def get_user_input
@@ -36,15 +39,13 @@ class SustainableSeafood::CLI
                 when "Exit"
                     exit_program
                 else 
-                    display_fish_details(input)
+                    display_fish_details(input) #need to move this to an elsif statement, otherwise will try to call display_list_header....
                 end
                 
                 display_list_header(input)
                 display_list_in_columns(selected_list)
-                puts ""
-                puts "To see info about a specific species, please enter the species' number, 
-                or type 'main' to return to the main menu:"
-                species_details_menu(selected_list)
+                display_submenu
+                submenu_actions(selected_list)
 
             else
                 invalid_input
@@ -52,8 +53,16 @@ class SustainableSeafood::CLI
             end     
     end
 
+    def display_submenu
+        puts ""
+        puts <<~HEREDOC
+        To see info about a specific species, please enter the species' number, 
+        or type 'main' to return to the main menu:
+        HEREDOC
+    end
+
     def valid_main_menu_choice?(input)
-        ["All", "Farmed", "Wild", "Exit"].include?(input) || SustainableSeafood::Fish.find_by_name_or_alias(input)
+        ["All", "Farmed", "Wild", "Exit"].include?(input) || "wreckfish" #SustainableSeafood::Fish.find_by_name_or_alias(input)
     end
 
     def display_list_header(keyword)
@@ -83,7 +92,14 @@ class SustainableSeafood::CLI
         ### THESE COLUMNS ARE NOT RESPONSIVE, so terminal window must be certain width ####
     end
 
-    def species_details_menu(fish_list)
+    def id_species(input, fish_list) #since column display numbers don't correlate to the actual order of fish in Fish.all, 
+        #I need a special way to id the user's choice based on the number they enter | returns species name
+        formatted_list = create_column_contents(fish_list).flatten.compact #flatten into non-nested array; compact removes nil values at end - this prints the list again
+        user_choice = formatted_list.find {|numbered_species| numbered_species.include?(input)} #returns in form like "7. Sablefish"  
+        selected_species_name = user_choice.gsub(/^\d+.\s/, "").strip #remove the number and padding added for column formatting
+    end
+
+    def submenu_actions(fish_list)
         input = gets.strip
         if input.to_i.between?(1, fish_list.all.length)
             fish_name = id_species(input, fish_list) 
@@ -95,7 +111,7 @@ class SustainableSeafood::CLI
             exit_program
         else
             invalid_input
-            species_details_menu(fish_list)
+            submenu_actions(fish_list)
         end
     end
 
@@ -105,18 +121,19 @@ class SustainableSeafood::CLI
         puts fish.name.upcase
         puts ""
         puts "--------- AKA ---------"
-        puts fish.aliases
+        puts fish.aliases || "       No aliases      "
         puts "------ ><{{{{{°> ------"
         puts ""
         puts fish.quote
         puts ""
 
-        if fish.harvest_type == "farmed"
+        if fish.harvest_type == "Farmed"
             puts "Farming Methods: #{fish.farming_method}"
             puts ""
             puts "Environmental Considerations: #{fish.env_considerations}"
             puts ""
             puts "Feeds: #{fish.feeds}"
+            puts ""
         else 
             puts "Population Status: #{fish.population}"
             puts ""
@@ -126,16 +143,16 @@ class SustainableSeafood::CLI
             puts ""
             puts "Bycatch: #{fish.bycatch}"
         end
-        display_main_menu
-        main_menu_actions
+        
+        puts ""
+        puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        next_action
     end
 
-    def id_species(input, fish_list) #since column display numbers don't correlate to the actual order of fish in Fish.all, 
-        #I need a special way to id the user's choice based on the number they enter | returns species name
-        formatted_list = create_column_contents(fish_list).flatten.compact #flatten into non-nested array; compact removes nil values at end - this prints the list again
-        user_choice = formatted_list.find {|numbered_species| numbered_species.include?(input)} #returns in form like "7. Sablefish"  
-        selected_species_name = user_choice.gsub(/^\d+.\s/, "").strip #remove the number and padding added for column formatting
+    def next_action
+        
     end
+    
 
     def exit_program #maybe clear the terminal screen using system "clear"
         puts "Thanks for using Sustainable Seafood!"
