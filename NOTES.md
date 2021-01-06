@@ -26,3 +26,23 @@ Might be able to print in columns using something like this:
 test = [[1, 2], [3, 4], [5, 6], [7, 8]]  #first divide up the fish into arrays of equal size - 3 or 4?
 test.each {|pair| puts "#{pair[0]} #{pair[1]}"} #then print the pairs in rows
 
+#### TEST CODE ####
+# test = [1, 2, 3, 4, 5, 6, 7, 8]
+# num = 1
+# i = 0
+# while i < test.length
+# puts "#{num}. #{test[i]}   #{num += 1}. #{test[i+=1]}"
+# i+=1
+# num+=1
+# end
+
+### Returns this ####
+# How can I print nums vertically?
+# 1. 1   2. 2
+# 3. 3   4. 4
+# 5. 5   6. 6
+# 7. 7   8. 8
+#  => nil 
+
+# puts col_1 col_2 col_3
+# col_1 = 1st 3rd of list - need to divide length by 3 to determine # of rows in each column
