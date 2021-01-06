@@ -20,7 +20,7 @@ class SustainableSeafood::CLI
 
     def display_main_menu
         puts ""
-        puts <<~HEREDOC
+        puts <<~MAINMENU
         Enter a marine species name to search the records
         or select an option below to view species lists:
 
@@ -29,7 +29,7 @@ class SustainableSeafood::CLI
             ><{{{{°>  Enter 'wild' to see only wild species
         
         Enter 'exit' at any time to exit the program.
-        HEREDOC
+        MAINMENU
     end
 
     def get_user_input
@@ -56,7 +56,7 @@ class SustainableSeafood::CLI
                 display_submenu
                 submenu_actions(selected_list)
 
-            elsif SustainableSeafood::Fish.find_by_name(input)
+            elsif SustainableSeafood::Fish.find_by_name_or_alias(input)
                 display_fish_details(input)
                 display_submenu
                 submenu_actions(selected_list)
@@ -69,10 +69,10 @@ class SustainableSeafood::CLI
 
     def display_submenu
         puts ""
-        puts <<~HEREDOC
+        puts <<~SUBMENU
         To see info about a specific species, please enter the species' number, 
         or type 'main' to return to the main menu:
-        HEREDOC
+        SUBMENU
     end
 
     def valid_list_choice?(input)
@@ -92,7 +92,7 @@ class SustainableSeafood::CLI
 
     def create_column_contents(fish_list)
         sorted_list = fish_list.sort_by_name #returns fish objects sorted alphabetically by name
-        numbered_list = []
+        numbered_list = [] #create empty array to store numbered names
         sorted_list.each.with_index(1) {|fish, i| numbered_list << "#{i}. #{fish.name}"} #returns alphabetized, numbered list of fish names - ran into issue when using map at first because it changed fish instance variables
         cols = numbered_list.each_slice((numbered_list.size+2)/3).to_a #splits list of names into 3 arrays of closely equal size
         zip_columns = cols.first.zip(*cols[1..-1])
@@ -130,7 +130,7 @@ class SustainableSeafood::CLI
     end
 
     def display_fish_details(fish_name)
-        fish = SustainableSeafood::Fish.find_by_name(fish_name)
+        fish = SustainableSeafood::Fish.find_by_name_or_alias(fish_name)
         puts ""
         puts fish.name.upcase
         puts ""
@@ -147,7 +147,6 @@ class SustainableSeafood::CLI
             puts "Environmental Considerations: #{fish.env_considerations}"
             puts ""
             puts "Feeds: #{fish.feeds}"
-            puts ""
         else 
             puts "Population Status: #{fish.population}"
             puts ""
