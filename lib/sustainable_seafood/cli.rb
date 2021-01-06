@@ -117,7 +117,7 @@ class SustainableSeafood::CLI
         input = gets.strip
         if input.to_i.between?(1, fish_list.all.length)
             fish_name = id_species(input, fish_list) 
-            display_fish_details(fish_name) #can I make @input a variable and pass it around?
+            display_fish_details(fish_name)
         elsif input == "main"
             display_main_menu
             main_menu_actions
@@ -131,6 +131,7 @@ class SustainableSeafood::CLI
 
     def display_fish_details(fish_name)
         fish = SustainableSeafood::Fish.find_by_name_or_alias(fish_name)
+
         puts ""
         puts fish.name.upcase
         puts ""
@@ -138,27 +139,34 @@ class SustainableSeafood::CLI
         puts fish.aliases || "       No aliases      "
         puts "------ ><{{{{{°> ------"
         puts ""
-        puts fish.quote
+        puts WordWrap.ww fish.quote, 80
         puts ""
 
         if fish.harvest_type == "Farmed"
-            puts "Farming Methods: #{fish.farming_method}"
+            puts "Farming Methods:"
+            puts WordWrap.ww fish.farming_method, 80
             puts ""
-            puts "Environmental Considerations: #{fish.env_considerations}"
+            puts "Environmental Considerations:"
+            puts WordWrap.ww fish.env_considerations, 80
             puts ""
-            puts "Feeds: #{fish.feeds}"
+            puts "Feeds:"
+            puts WordWrap.ww fish.feeds, 80
         else 
-            puts "Population Status: #{fish.population}"
+            puts "Population Status:"
+            puts WordWrap.ww fish.population, 80
             puts ""
-            puts "Habitat Impacts: #{fish.habitat_impacts}"
+            puts "Habitat Impacts:"
+            puts WordWrap.ww fish.habitat_impacts, 80
             puts ""
-            puts "Fishing Rate: #{fish.fishing_rate}"
+            puts "Fishing Rate:"
+            puts WordWrap.ww fish.fishing_rate, 80
             puts ""
-            puts "Bycatch: #{fish.bycatch}"
+            puts "Bycatch:"
+            puts WordWrap.ww fish.bycatch, 80
         end
 
         puts ""
-        puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         display_main_menu
         main_menu_actions
     end
