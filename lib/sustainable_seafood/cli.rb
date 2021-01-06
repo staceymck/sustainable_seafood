@@ -2,8 +2,14 @@ require 'pry'
 class SustainableSeafood::CLI
 
     def call
-        puts "------------- Welcome to Sustainable Seafood -------------"
-        puts "Access sustainability-related info for 100+ marine species"
+        puts <<~HEREDOC
+        ------------ Welcome to Sustainable Seafood -------------
+
+        Access sustainability-related info for 100+ marine species
+
+          --> For optimal viewing, use a wide terminal window <--
+        HEREDOC
+
         display_main_menu
         main_menu_actions
     end
@@ -145,7 +151,7 @@ class SustainableSeafood::CLI
         end
 
         puts ""
-        puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         display_main_menu
         main_menu_actions
     end
