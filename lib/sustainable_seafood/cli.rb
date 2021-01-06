@@ -3,11 +3,15 @@ class SustainableSeafood::CLI
 
     def call
         puts <<~HEREDOC
-        ------------ Welcome to Sustainable Seafood -------------
+
+        ============== Welcome to Sustainable Seafood ==============
 
         Access sustainability-related info for 100+ marine species
-
+         from FishWatch, the US database for sustainable seafood.
           --> For optimal viewing, use a wide terminal window <--
+                                        
+        ========================= ><{{{{°> =========================
+        
         HEREDOC
 
         display_main_menu
@@ -17,7 +21,8 @@ class SustainableSeafood::CLI
     def display_main_menu
         puts ""
         puts <<~HEREDOC
-        Enter a marine species name to search or select an option below to view species lists.
+        Enter a marine species name to search the records
+        or select an option below to view species lists:
 
             ><{{{{°>  Enter 'all' to see all 113 species
             ><{{{{°>  Enter 'farmed' to see only farmed species
@@ -32,27 +37,30 @@ class SustainableSeafood::CLI
     end
 
     def main_menu_actions
-            input = get_user_input.capitalize
+            input = get_user_input.downcase
 
-            if valid_main_menu_choice?(input)
+            if valid_list_choice?(input)
                 case input 
-                when "All" 
+                when "all" 
                     selected_list = SustainableSeafood::Fish
-                when "Farmed"
+                when "farmed"
                     selected_list = SustainableSeafood::Farmed
-                when "Wild"
+                when "wild"
                     selected_list = SustainableSeafood::Wild
-                when "Exit"
+                when "exit"
                     exit_program
-                else 
-                    display_fish_details(input) #need to move this to an elsif statement, otherwise will try to call display_list_header....
                 end
-                
+
                 display_list_header(input)
                 display_list_in_columns(selected_list)
                 display_submenu
                 submenu_actions(selected_list)
 
+            elsif SustainableSeafood::Fish.find_by_name(input)
+                display_fish_details(input)
+                display_submenu
+                submenu_actions(selected_list)
+        
             else
                 invalid_input
                 main_menu_actions
@@ -67,13 +75,13 @@ class SustainableSeafood::CLI
         HEREDOC
     end
 
-    def valid_main_menu_choice?(input)
-        ["All", "Farmed", "Wild", "Exit"].include?(input) || "wreckfish" #SustainableSeafood::Fish.find_by_name_or_alias(input)
+    def valid_list_choice?(input)
+        ["all", "farmed", "wild", "exit"].include?(input)
     end
 
     def display_list_header(keyword)
         puts ""
-        puts "---------- #{keyword} Species ---------- "
+        puts "---------- #{keyword.capitalize} Species ---------- "
         puts ""
     end
 
