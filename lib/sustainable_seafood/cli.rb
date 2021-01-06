@@ -2,7 +2,8 @@ require 'pry'
 class SustainableSeafood::CLI
 
     def call
-        puts "Welcome to Sustainable Seafood!"
+        puts "------------- Welcome to Sustainable Seafood -------------"
+        puts "Access sustainability-related info for 100+ marine species"
         display_main_menu
         main_menu_actions
     end
@@ -10,8 +11,7 @@ class SustainableSeafood::CLI
     def display_main_menu
         puts ""
         puts <<~HEREDOC
-        To access sustainability-related info for a specific marine species, 
-        enter the species name or select an option below to view species lists.
+        Enter a marine species name to search or select an option below to view species lists.
 
             ><{{{{°>  Enter 'all' to see all 113 species
             ><{{{{°>  Enter 'farmed' to see only farmed species
@@ -143,16 +143,12 @@ class SustainableSeafood::CLI
             puts ""
             puts "Bycatch: #{fish.bycatch}"
         end
-        
+
         puts ""
         puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        next_action
+        display_main_menu
+        main_menu_actions
     end
-
-    def next_action
-        
-    end
-    
 
     def exit_program #maybe clear the terminal screen using system "clear"
         puts "Thanks for using Sustainable Seafood!"
@@ -161,7 +157,23 @@ class SustainableSeafood::CLI
 end
 
 
+#ASCII ART
 
+# ><{{{{{°>
+
+#  ooOOoo
+# (OOOOOO)
+# --------
+# ((   ((  
+#  ))   ))   
+# ((   (( 
+#  ))   ))
+
+# (                   o   (
+#  )  )              o     )  )
+# (  (        ><{{{º>     (  (
+#  )  ) ><{{{{º>           )  )
+# (__(_____________________(__(
 
 
 
