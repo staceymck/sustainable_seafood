@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     sustainable_seafood (0.1.0)
+      word_wrap
 
 GEM
   remote: https://rubygems.org/
@@ -12,6 +13,7 @@ GEM
       coderay (~> 1.1)
       method_source (~> 1.0)
     rake (12.3.2)
+    word_wrap (1.0.0)
 
 PLATFORMS
   ruby
