@@ -2,17 +2,15 @@ require 'pry'
 class SustainableSeafood::CLI
 
     def call
-        puts <<~HEREDOC
-
-        ============== Welcome to Sustainable Seafood ==============
-
-        Access sustainability-related info for 100+ marine species
-         from FishWatch, the US database for sustainable seafood.
-          --> For optimal viewing, use a wide terminal window <--
-                                        
-        ========================= ><{{{{°> =========================
-        
-        HEREDOC
+        puts ""
+        puts ""
+        puts "============== Welcome to Sustainable Seafood ==============".cyan
+        puts ""
+        puts " Access sustainability-related info for 100+ marine species "
+        puts "  from FishWatch, the US database for sustainable seafood.  "
+        puts "  --> For optimal viewing, use a large terminal window <--  ".light_green
+        puts ""
+        puts "========================= ><{{{{°> =========================".cyan
 
         display_main_menu
         main_menu_actions
@@ -20,16 +18,14 @@ class SustainableSeafood::CLI
 
     def display_main_menu
         puts ""
-        puts <<~MAINMENU
-        Enter a marine species name to search the records
-        or select an option below to view species lists:
-
-            ><{{{{°>  Enter 'all' to see all 113 species
-            ><{{{{°>  Enter 'farmed' to see only farmed species
-            ><{{{{°>  Enter 'wild' to see only wild species
-        
-        Enter 'exit' at any time to exit the program.
-        MAINMENU
+        puts "Enter a marine species name to search the records or"
+        puts "select an option below to view species lists:"
+        puts ""
+        puts "  ><{{{{°>  ".cyan + "Enter 'all' to see all 113 species"
+        puts "  ><{{{{°>  ".light_blue + "Enter 'farmed' to see only farmed species"
+        puts "  ><{{{{°>  ".blue + "Enter 'wild' to see only wild species"
+        puts ""
+        puts "Enter 'exit' at any time to exit the program."
     end
 
     def get_user_input
@@ -56,6 +52,7 @@ class SustainableSeafood::CLI
                 display_submenu
                 submenu_actions(selected_list)
 
+
             elsif SustainableSeafood::Fish.find_by_name_or_alias(input)
                 display_fish_details(input)
                 display_submenu
@@ -69,10 +66,8 @@ class SustainableSeafood::CLI
 
     def display_submenu
         puts ""
-        puts <<~SUBMENU
-        To see info about a specific species, please enter the species' number, 
-        or type 'main' to return to the main menu:
-        SUBMENU
+        puts "To see info about a specific species, please enter the species' number,".cyan
+        puts "or type 'main' to return to the main menu:".cyan
     end
 
     def valid_list_choice?(input)
@@ -81,13 +76,13 @@ class SustainableSeafood::CLI
 
     def display_list_header(keyword)
         puts ""
-        puts "---------- #{keyword.capitalize} Species ---------- "
+        puts "------------------------------------ #{keyword.capitalize} Species -----------------------------------".cyan
         puts ""
     end
 
     def invalid_input
         puts ""
-        puts "Input not recognized. Please enter a different selection:"
+        puts "Input not recognized. Please enter a different selection:".cyan
     end
 
     def create_column_contents(fish_list)
@@ -133,52 +128,72 @@ class SustainableSeafood::CLI
         fish = SustainableSeafood::Fish.find_by_name_or_alias(fish_name)
 
         puts ""
-        puts fish.name.upcase
+        puts fish.name.upcase.cyan.bold
         puts ""
-        puts "--------- AKA ---------"
+        puts "--------- AKA ---------".cyan
         puts fish.aliases || "       No aliases      "
-        puts "------ ><{{{{{°> ------"
+        puts "------ ><{{{{{°> ------".cyan
         puts ""
         puts WordWrap.ww fish.quote, 80
         puts ""
 
         if fish.harvest_type == "Farmed"
-            puts "Farming Methods:"
+            puts "Farming Methods:".cyan
             puts WordWrap.ww fish.farming_method, 80
             puts ""
-            puts "Environmental Considerations:"
+            puts "Environmental Considerations:".cyan
             puts WordWrap.ww fish.env_considerations, 80
             puts ""
-            puts "Feeds:"
+            puts "Feeds:".cyan
             puts WordWrap.ww fish.feeds, 80
         else 
-            puts "Population Status:"
+            puts "Population Status:".cyan
             puts WordWrap.ww fish.population, 80
             puts ""
-            puts "Habitat Impacts:"
+            puts "Habitat Impacts:".cyan
             puts WordWrap.ww fish.habitat_impacts, 80
             puts ""
-            puts "Fishing Rate:"
+            puts "Fishing Rate:".cyan
             puts WordWrap.ww fish.fishing_rate, 80
             puts ""
-            puts "Bycatch:"
+            puts "Bycatch:".cyan
             puts WordWrap.ww fish.bycatch, 80
         end
 
         puts ""
-        puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~".cyan
         display_main_menu
         main_menu_actions
     end
 
+    def fish_animate
+        space = "~~"
+        17.times do
+            STDOUT.write "\r #{space} ><{{{{º>".cyan
+            space += "~~~" 
+            sleep (0.12)
+        end
+        puts ""
+    end
+
     def exit_program #maybe clear the terminal screen using system "clear"
-        puts "Thanks for using Sustainable Seafood!"
+        puts ""
+        puts "=========== Thanks for using Sustainable Seafood ==========="
+        fish_animate
         exit
     end
 end
 
 
+
 #ASCII ART
+
+
+# puts "   (                   o   (       "
+# puts "    )  )               o    )  )   "
+# puts "   (  (         ><{{{º>    (  (    "
+# puts "    )  )  ><{{{{º>          )  )   "
+# puts "___(__(____________________(__(____"
 
 # ><{{{{{°>
 
