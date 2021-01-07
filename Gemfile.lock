@@ -2,12 +2,14 @@ PATH
   remote: .
   specs:
     sustainable_seafood (0.1.0)
+      colorize
       word_wrap
 
 GEM
   remote: https://rubygems.org/
   specs:
     coderay (1.1.3)
+    colorize (0.8.1)
     method_source (1.0.0)
     pry (0.13.1)
       coderay (~> 1.1)
