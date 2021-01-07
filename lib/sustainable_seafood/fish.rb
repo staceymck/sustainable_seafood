@@ -19,11 +19,11 @@ class SustainableSeafood::Fish
         @@all
     end
 
-    ### How can I make these methods exclusive to the Fish class? Create a module? ###
-
     def self.sort_by_name
         all.sort_by {|fish| fish.name}
     end
+
+    ### How can I make these methods exclusive to the Fish class? Create a module? ###
 
     def self.find_by_name(fish_name)
         SustainableSeafood::Fish.all.find {|fish| fish.name.downcase == fish_name.downcase}
@@ -39,14 +39,12 @@ class SustainableSeafood::Fish
         find_by_name(fish_name) || find_by_alias(fish_name)
     end
 
-    def self.search_suggestions(input)
+     def self.search_suggestions(input)
         suggestions = []
         SustainableSeafood::Fish.all.each do |fish|
-            names = fish.aliases << fish.name
-            names_keywords = names.map {|word| word.downcase}.join(" ").split.uniq
-                if names_keywords.include?(input)
+            if fish.name.downcase.include?(input)
                     suggestions << fish.name 
-                end
+            end
         end
         suggestions
     end
