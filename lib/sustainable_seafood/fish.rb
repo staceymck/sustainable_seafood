@@ -3,7 +3,6 @@ class SustainableSeafood::Fish
     @@all = []
 
     def initialize(fish_details) #fish_details represents a single fish element from the hash returned by the get_fish API class method
-        #fish_details.each {|k, v| v.gsub("&#039;", "'") if v.is_a? String} - need a way to fix all apostrophes
         self.name = fish_details["Species Name"].strip
         self.aliases = fish_details["Species Aliases"]
         self.quote = fish_details["Quote"].strip
@@ -34,13 +33,4 @@ class SustainableSeafood::Fish
     def self.find_by_name_or_alias(fish_name)
         find_by_name(fish_name) || find_by_alias(fish_name)
     end
-
-    # def format_apostrophes(fish_details)
-    #     fish_details.each {|k, v| v.gsub("&#039;", "'") if v.is_a? String}
-    # end
-
-    # def aliases=(aliases)
-    #     @aliases = aliases.scan(/(?<=">).+?(?=<)/)
-    #      = alias_array.map {|alias_name| format_apostrophes(alias_name)} 
-    # end
 end
