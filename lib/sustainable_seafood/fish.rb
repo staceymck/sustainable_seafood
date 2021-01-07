@@ -1,5 +1,5 @@
 class SustainableSeafood::Fish
-    attr_accessor :name, :aliases, :quote, :harvest_type
+    attr_accessor :name, :aliases, :quote, :harvest_type, :mercury_levels
     @@all = []
 
     def initialize(fish_details) #fish_details represents a single fish element from the hash returned by the get_fish API class method
@@ -12,7 +12,10 @@ class SustainableSeafood::Fish
     end
 
     def self.all #Would need custom self.all methods in the Wild and Farmed classes that select the wild and farmed fish objs from the Fish.all collection 
-        SustainableSeafood::API.make_fish if @@all.empty?
+        if @@all.empty?
+            SustainableSeafood::API.make_fish
+            SustainableSeafood::Scraper.get_mercury_levels
+        end
         @@all
     end
 
@@ -33,4 +36,5 @@ class SustainableSeafood::Fish
     def self.find_by_name_or_alias(fish_name)
         find_by_name(fish_name) || find_by_alias(fish_name)
     end
+
 end
