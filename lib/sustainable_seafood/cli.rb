@@ -32,12 +32,8 @@ class SustainableSeafood::CLI
         puts "Enter 'exit' at any time to exit the program."
     end
 
-    def get_user_input
-        gets.strip
-    end
-
     def main_menu_actions
-            input = get_user_input.downcase
+            input = gets.strip.downcase
 
             if valid_list_choice?(input)
                 case input 
@@ -55,7 +51,6 @@ class SustainableSeafood::CLI
                 display_list_in_columns(selected_list)
                 display_submenu
                 submenu_actions(selected_list)
-
 
             elsif SustainableSeafood::Fish.find_by_name_or_alias(input)
                 display_fish_details(input)
@@ -108,7 +103,7 @@ class SustainableSeafood::CLI
     def id_species(input, fish_list) #since column display numbers don't correlate to the actual order of fish in Fish.all, 
         #I need a special way to id the user's choice based on the number they enter | returns species name
         formatted_list = create_column_contents(fish_list).flatten.compact #flatten into non-nested array; compact removes nil values at end - this prints the list again
-        user_choice = formatted_list.find {|numbered_species| numbered_species.include?(input)} #returns in form like "7. Sablefish"  
+        user_choice = formatted_list.find {|numbered_species| numbered_species.match?(/\A#{input}\./)} #returns in form like "7. Sablefish"  
         selected_species_name = user_choice.gsub(/^\d+.\s/, "").strip #remove the number and padding added for column formatting
     end
 
@@ -117,10 +112,10 @@ class SustainableSeafood::CLI
         if input.to_i.between?(1, fish_list.all.length)
             fish_name = id_species(input, fish_list) 
             display_fish_details(fish_name)
-        elsif input == "main"
+        elsif input.downcase == "main"
             display_main_menu
             main_menu_actions
-        elsif input == "exit"
+        elsif input.downcase == "exit"
             exit_program
         else
             invalid_input
