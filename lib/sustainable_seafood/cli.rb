@@ -52,11 +52,19 @@ class SustainableSeafood::CLI
                 display_submenu
                 submenu_actions(selected_list)
 
-            elsif SustainableSeafood::Fish.find_by_name_or_alias(input)
+            elsif SustainableSeafood::Fish.find_by_name_or_alias(input) 
                 display_fish_details(input)
                 display_submenu
                 submenu_actions(selected_list)
-        
+
+            elsif !SustainableSeafood::Fish.search_suggestions(input).empty?
+                puts ""
+                puts "Search suggestions:".cyan
+                puts SustainableSeafood::Fish.search_suggestions(input)
+                puts ""
+                puts "Enter again or pick a list:".cyan
+                main_menu_actions
+
             else
                 invalid_input
                 main_menu_actions
