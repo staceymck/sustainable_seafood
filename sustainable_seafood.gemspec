@@ -32,5 +32,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry"
 
   spec.add_dependency "word_wrap"
+  spec.add_dependency "colorize"
 
 end
