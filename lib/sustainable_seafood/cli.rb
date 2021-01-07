@@ -4,13 +4,17 @@ class SustainableSeafood::CLI
     def call
         puts ""
         puts ""
-        puts "============== Welcome to Sustainable Seafood ==============".cyan
+        puts "================ Welcome to Sustainable Seafood ================".cyan
         puts ""
-        puts " Access sustainability-related info for 100+ marine species "
-        puts "  from FishWatch, the US database for sustainable seafood.  "
-        puts "  --> For optimal viewing, use a large terminal window <--  ".light_green
+        puts "   Access sustainability-related info for 100+ marine species   "
+        puts "    from FishWatch, the US database for sustainable seafood.    "
+        puts "    --> For optimal viewing, use a large terminal window <--    ".light_green
         puts ""
-        puts "========================= ><{{{{°> =========================".cyan
+        puts "Some species details include data on mercury levels from FDA.gov"
+        puts "          For a complete mercury advisory list, visit:          " 
+        puts "  https://www.fda.gov/food/consumers/advice-about-eating-fish   ".italic
+        puts ""
+        puts "=====================-===== ><{{{{°> ===========================".cyan
 
         display_main_menu
         main_menu_actions
@@ -136,7 +140,12 @@ class SustainableSeafood::CLI
         puts ""
         puts WordWrap.ww fish.quote, 80
         puts ""
-
+        if fish.mercury_levels
+            puts "FDA Mercury Advisory:".cyan
+            puts fish.mercury_levels
+            puts ""
+        end
+        
         if fish.harvest_type == "Farmed"
             puts "Farming Methods:".cyan
             puts WordWrap.ww fish.farming_method, 80
