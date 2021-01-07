@@ -11,6 +11,7 @@ require "net/http"
 require "open-uri"
 require "json"
 require "word_wrap"
+require "colorize"
 #added section ends here
 
 module SustainableSeafood
