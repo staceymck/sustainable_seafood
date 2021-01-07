@@ -136,7 +136,7 @@ class SustainableSeafood::CLI
 
         puts ""
         puts "****** #{fish.name.upcase} ******".cyan.bold
-        puts "AKA: " + fish.aliases.join(", ") || "No aliases"
+        puts WordWrap.ww "AKA: #{fish.aliases.join(", ")}", 80 || "No aliases"
         puts ""
         puts WordWrap.ww fish.quote, 80
         puts ""
