@@ -14,7 +14,7 @@ class SustainableSeafood::CLI
         puts "          For a complete mercury advisory list, visit:          " 
         puts "  https://www.fda.gov/food/consumers/advice-about-eating-fish   ".italic
         puts ""
-        puts "=====================-===== ><{{{{°> ===========================".cyan
+        puts "=========================== ><{{{{°> ===========================".cyan
 
         display_main_menu
         main_menu_actions
@@ -132,11 +132,8 @@ class SustainableSeafood::CLI
         fish = SustainableSeafood::Fish.find_by_name_or_alias(fish_name)
 
         puts ""
-        puts fish.name.upcase.cyan.bold
-        puts ""
-        puts "--------- AKA ---------".cyan
-        puts fish.aliases || "       No aliases      "
-        puts "------ ><{{{{{°> ------".cyan
+        puts "****** #{fish.name.upcase} ******".cyan.bold
+        puts "AKA: " + fish.aliases.join(", ") || "No aliases"
         puts ""
         puts WordWrap.ww fish.quote, 80
         puts ""
