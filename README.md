@@ -1,8 +1,8 @@
 # SustainableSeafood
 
-This CLI app helps users make informed seafood choices by providing data on fishing rates, bycatch, population status, and other sustainability-related information for over 100 marine species. Users can find information on both wild and farmed species.
+This CLI app helps users make informed seafood choices by providing data on fishing rates, bycatch, population status, and other sustainability-related information for over 100 marine species. Users can find information on both wild and farmed species. 
 
-Data is pulled via an API from FishWatch, the U.S. national database for sustainable seafood.
+Sustainability data is pulled via an API from FishWatch, the U.S. national database for sustainable seafood. Mercury level advisory data is pulled from https://www.fda.gov/food/consumers/advice-about-eating-fish.
 
 ## Installation
 
