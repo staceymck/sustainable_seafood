@@ -7,11 +7,10 @@ class SustainableSeafood::Fish
         self.aliases = fish_details["Species Aliases"]
         self.quote = fish_details["Quote"].strip
         self.harvest_type = fish_details["Harvest Type"].strip
-        @@all << self #if saving here to @@all, can't also save in Wild and Farmed to their own @@all variables because it creates duplicates
-        #why doesn't using self.class.all << self here allow the #all methods to work? They all return 0
+        @@all << self
     end
 
-    def self.all #Would need custom self.all methods in the Wild and Farmed classes that select the wild and farmed fish objs from the Fish.all collection 
+    def self.all
         if @@all.empty?
             SustainableSeafood::API.make_fish
             SustainableSeafood::Scraper.get_mercury_levels
@@ -22,8 +21,6 @@ class SustainableSeafood::Fish
     def self.sort_by_name
         all.sort_by {|fish| fish.name}
     end
-
-    ### Create a Findable module? ###
 
     def self.find_by_name(fish_name)
         all.find {|fish| fish.name.downcase == fish_name.downcase}
