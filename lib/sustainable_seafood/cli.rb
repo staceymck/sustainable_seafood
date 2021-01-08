@@ -11,7 +11,7 @@ class SustainableSeafood::CLI
         puts "    --> For optimal viewing, use a large terminal window <--    ".light_green
         puts ""
         puts "Some species details include data on mercury levels from FDA.gov"
-        puts "          For a complete mercury advisory list, visit:          " 
+        puts "      For a more comprehensive mercury advisory list, visit:    " 
         puts "  https://www.fda.gov/food/consumers/advice-about-eating-fish   ".italic
         puts ""
         puts "=========================== ><{{{{°> ===========================".cyan
@@ -150,6 +150,9 @@ class SustainableSeafood::CLI
         puts ""
         puts WordWrap.ww fish.quote, 80
         puts ""
+        puts fish.harvest_type
+        puts ""
+
         if fish.mercury_levels
             puts "FDA Mercury Advisory:".cyan
             puts fish.mercury_levels
