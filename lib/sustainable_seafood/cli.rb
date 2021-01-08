@@ -1,4 +1,3 @@
-require 'pry'
 class SustainableSeafood::CLI
 
     def call
@@ -12,7 +11,7 @@ class SustainableSeafood::CLI
         puts ""
         puts "Some species details include data on mercury levels from FDA.gov"
         puts "      For a more comprehensive mercury advisory list, visit:    " 
-        puts "  https://www.fda.gov/food/consumers/advice-about-eating-fish   ".italic
+        puts "   https://www.fda.gov/food/consumers/advice-about-eating-fish  ".italic
         puts ""
         puts "=========================== ><{{{{°> ===========================".cyan
 
@@ -74,7 +73,7 @@ class SustainableSeafood::CLI
     def search_suggestions(input)
         suggestions = []
         SustainableSeafood::Fish.all.each do |fish|
-            if fish.name.downcase.include?(input)
+            if fish.name.downcase.split.include?(input)
                     suggestions << fish.name 
             end
         end
@@ -102,27 +101,22 @@ class SustainableSeafood::CLI
         puts ""
     end
 
-    def create_column_contents(fish_list)
-        sorted_list = fish_list.sort_by_name #returns fish objects sorted alphabetically by name
-        numbered_list = [] #create empty array to store numbered names
-        sorted_list.each.with_index(1) {|fish, i| numbered_list << "#{i}. #{fish.name}"} #returns alphabetized, numbered list of fish names - ran into issue when using map at first because it changed fish instance variables
-        cols = numbered_list.each_slice((numbered_list.size+2)/3).to_a #splits list of names into 3 arrays of closely equal size
+    def column_contents(fish_list)
+        sorted_list = fish_list.sort_by_name
+        numbered_list = []
+        sorted_list.each.with_index(1) {|fish, i| numbered_list << "#{i}. #{fish.name}"}
+        cols = numbered_list.each_slice((numbered_list.size+2)/3).to_a
         zip_columns = cols.first.zip(*cols[1..-1])
     end
 
     def display_list_in_columns(fish_list)
-        create_column_contents(fish_list).each{|row| puts row.map{|fish| fish ? fish.ljust(35) : '     '}.join("  ") } 
-        #the ternary statement checks if a list item is nil/false or not. Some may be nil as a result of the
-        #way the create_column_contents method works. If nil, then empty string is printed.
-
-        ### THESE COLUMNS ARE NOT RESPONSIVE, so terminal window must be certain width ####
+        column_contents(fish_list).each{|row| puts row.map{|fish| fish ? fish.ljust(35) : '     '}.join("  ") } 
     end
 
-    def id_species_by_column_position(input, fish_list) #since column display numbers don't correlate to the actual order of fish in Fish.all, 
-        #I need a special way to id the user's choice based on the number they enter | returns species name
-        formatted_list = create_column_contents(fish_list).flatten.compact #flatten into non-nested array; compact removes nil values at end - this prints the list again
-        user_choice = formatted_list.find {|numbered_species| numbered_species.match?(/\A#{input}\./)} #returns in form like "7. Sablefish"  
-        selected_species_name = user_choice.gsub(/^\d+.\s/, "").strip #remove the number and padding added for column formatting
+    def id_species_by_column_position(input, fish_list) 
+        formatted_list = column_contents(fish_list).flatten.compact
+        user_choice = formatted_list.find {|numbered_species| numbered_species.match?(/\A#{input}\./)}
+        selected_species_name = user_choice.gsub(/^\d+.\s/, "").strip
     end
 
     def submenu_actions(fish_list)
@@ -150,6 +144,7 @@ class SustainableSeafood::CLI
         puts ""
         puts WordWrap.ww fish.quote, 80
         puts ""
+        puts "Harvest Type:".cyan
         puts fish.harvest_type
         puts ""
 
@@ -188,7 +183,7 @@ class SustainableSeafood::CLI
         main_menu_actions
     end
 
-    def fish_animate
+    def animate_fish
         space = "~~"
         17.times do
             STDOUT.write "\r #{space} ><{{{{º>".cyan
@@ -201,7 +196,7 @@ class SustainableSeafood::CLI
     def exit_program
         puts ""
         puts "=========== Thanks for using Sustainable Seafood ==========="
-        fish_animate
+        animate_fish
         exit
     end
 end
