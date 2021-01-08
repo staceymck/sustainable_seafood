@@ -3,7 +3,7 @@ class SustainableSeafood::Farmed < SustainableSeafood::Fish
 
     def initialize(fish_details)
         self.feeds = fish_details["Feeds_"].strip
-        self.env_considerations = fish_details["Environmental Considerations"] #will need to format this response
+        self.env_considerations = fish_details["Environmental Considerations"] 
         self.farming_method = fish_details["Farming Methods"].strip
         super
     end

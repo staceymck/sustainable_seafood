@@ -9,7 +9,7 @@ class SustainableSeafood::Wild < SustainableSeafood::Fish
         super
     end
 
-    def self.all #should I set up 'all' as a class instance variable on the Fish class or overwrite the reader like this?
+    def self.all
         SustainableSeafood::Fish.all.select {|fish| fish.class == self}
     end
 end
