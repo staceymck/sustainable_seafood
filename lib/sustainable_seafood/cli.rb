@@ -57,10 +57,10 @@ class SustainableSeafood::CLI
                 display_submenu
                 submenu_actions(selected_list)
 
-            elsif !SustainableSeafood::Fish.search_suggestions(input).empty?
+            elsif !search_suggestions(input).empty?
                 puts ""
                 puts "Search suggestions:".cyan
-                puts SustainableSeafood::Fish.search_suggestions(input)
+                puts search_suggestions(input)
                 puts ""
                 puts "Enter again or pick a list:".cyan
                 main_menu_actions
@@ -71,25 +71,35 @@ class SustainableSeafood::CLI
             end     
     end
 
-    def display_submenu
-        puts ""
-        puts "To see info about a specific species, please enter the species' number,".cyan
-        puts "or type 'main' to return to the main menu:".cyan
+    def search_suggestions(input)
+        suggestions = []
+        SustainableSeafood::Fish.all.each do |fish|
+            if fish.name.downcase.include?(input)
+                    suggestions << fish.name 
+            end
+        end
+        suggestions
     end
 
     def valid_list_choice?(input)
         ["all", "farmed", "wild", "exit"].include?(input)
     end
 
+    def invalid_input
+        puts ""
+        puts "Input not recognized. Please enter a different selection:".cyan
+    end
+
+    def display_submenu
+        puts ""
+        puts "To see info about a specific species, please enter the species' number,".cyan
+        puts "or type 'main' to return to the main menu:".cyan
+    end
+
     def display_list_header(keyword)
         puts ""
         puts "------------------------------------ #{keyword.capitalize} Species -----------------------------------".cyan
         puts ""
-    end
-
-    def invalid_input
-        puts ""
-        puts "Input not recognized. Please enter a different selection:".cyan
     end
 
     def create_column_contents(fish_list)
@@ -108,7 +118,7 @@ class SustainableSeafood::CLI
         ### THESE COLUMNS ARE NOT RESPONSIVE, so terminal window must be certain width ####
     end
 
-    def id_species(input, fish_list) #since column display numbers don't correlate to the actual order of fish in Fish.all, 
+    def id_species_by_column_position(input, fish_list) #since column display numbers don't correlate to the actual order of fish in Fish.all, 
         #I need a special way to id the user's choice based on the number they enter | returns species name
         formatted_list = create_column_contents(fish_list).flatten.compact #flatten into non-nested array; compact removes nil values at end - this prints the list again
         user_choice = formatted_list.find {|numbered_species| numbered_species.match?(/\A#{input}\./)} #returns in form like "7. Sablefish"  
@@ -118,7 +128,7 @@ class SustainableSeafood::CLI
     def submenu_actions(fish_list)
         input = gets.strip
         if input.to_i.between?(1, fish_list.all.length)
-            fish_name = id_species(input, fish_list) 
+            fish_name = id_species_by_column_position(input, fish_list) 
             display_fish_details(fish_name)
         elsif input.downcase == "main"
             display_main_menu
@@ -185,40 +195,10 @@ class SustainableSeafood::CLI
         puts ""
     end
 
-    def exit_program #maybe clear the terminal screen using system "clear"
+    def exit_program
         puts ""
         puts "=========== Thanks for using Sustainable Seafood ==========="
         fish_animate
         exit
     end
 end
-
-
-
-#ASCII ART
-
-
-# puts "   (                   o   (       "
-# puts "    )  )               o    )  )   "
-# puts "   (  (         ><{{{º>    (  (    "
-# puts "    )  )  ><{{{{º>          )  )   "
-# puts "___(__(____________________(__(____"
-
-# ><{{{{{°>
-
-#  ooOOoo
-# (OOOOOO)
-# --------
-# ((   ((  
-#  ))   ))   
-# ((   (( 
-#  ))   ))
-
-# (                   o   (
-#  )  )              o     )  )
-# (  (        ><{{{º>     (  (
-#  )  ) ><{{{{º>           )  )
-# (__(_____________________(__(
-
-
-

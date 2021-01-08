@@ -2,7 +2,7 @@ class SustainableSeafood::Fish
     attr_accessor :name, :aliases, :quote, :harvest_type, :mercury_levels
     @@all = []
 
-    def initialize(fish_details) #fish_details represents a single fish element from the hash returned by the get_fish API class method
+    def initialize(fish_details)
         self.name = fish_details["Species Name"].strip
         self.aliases = fish_details["Species Aliases"]
         self.quote = fish_details["Quote"].strip
@@ -39,13 +39,4 @@ class SustainableSeafood::Fish
         find_by_name(fish_name) || find_by_alias(fish_name)
     end
 
-     def self.search_suggestions(input)
-        suggestions = []
-        SustainableSeafood::Fish.all.each do |fish|
-            if fish.name.downcase.include?(input)
-                    suggestions << fish.name 
-            end
-        end
-        suggestions
-    end
 end
