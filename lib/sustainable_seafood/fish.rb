@@ -23,15 +23,15 @@ class SustainableSeafood::Fish
         all.sort_by {|fish| fish.name}
     end
 
-    ### How can I make these methods exclusive to the Fish class? Create a module? ###
+    ### Create a Findable module? ###
 
     def self.find_by_name(fish_name)
-        SustainableSeafood::Fish.all.find {|fish| fish.name.downcase == fish_name.downcase}
+        all.find {|fish| fish.name.downcase == fish_name.downcase}
     end
 
     def self.find_by_alias(fish_name)
-        SustainableSeafood::Fish.all.find do |fish| 
-         fish.aliases.map {|alias_name| alias_name.downcase}.include?(fish_name.downcase) 
+        all.find do |fish| 
+            fish.aliases.map {|alias_name| alias_name.downcase}.include?(fish_name.downcase) 
         end
     end
 
