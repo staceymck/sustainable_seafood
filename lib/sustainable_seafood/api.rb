@@ -23,6 +23,10 @@ class SustainableSeafood::API
     end
 
     ##### DATA CLEANUP METHODS ######
+    def self.format_special_chars(fish_details) 
+        fish_details.each {|k, v| fish_details[k] = v.gsub("&#039;", "'").gsub("&amp;", "&").gsub("&nbsp;", "") if v.is_a? String}
+    end
+    
     def self.format_aliases(fish_details)
         fish_details["Species Aliases"] = fish_details["Species Aliases"].scan(/(?<=">).+?(?=<)/)
     end
@@ -35,7 +39,4 @@ class SustainableSeafood::API
         end
     end
 
-    def self.format_special_chars(fish_details) 
-        fish_details.each {|k, v| fish_details[k] = v.gsub("&#039;", "'").gsub("&amp;", "&").gsub("&nbsp;", "") if v.is_a? String}
-    end
 end
