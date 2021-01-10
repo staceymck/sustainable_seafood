@@ -116,7 +116,7 @@ class SustainableSeafood::CLI
     def id_species_by_column_position(input, fish_list) 
         formatted_list = column_contents(fish_list).flatten.compact
         user_choice = formatted_list.find {|numbered_species| numbered_species.match?(/\A#{input}\./)}
-        selected_species_name = user_choice.gsub(/^\d+.\s/, "").strip
+        selected_species_name = user_choice.gsub(/^\d+\.\s/, "").strip
     end
 
     def submenu_actions(fish_list)
@@ -140,7 +140,8 @@ class SustainableSeafood::CLI
 
         puts ""
         puts "****** #{fish.name.upcase} ******".cyan.bold
-        puts WordWrap.ww "AKA: #{fish.aliases.join(", ")}", 80 || "No aliases"
+        #add boolean to check for aliases.nil?
+        puts WordWrap.ww "AKA: #{fish.aliases.join(", ")}", 80 || "No aliases" #this doesn't work - need different way to check for nil value in aliases array
         puts ""
         puts WordWrap.ww fish.quote, 80
         puts ""
