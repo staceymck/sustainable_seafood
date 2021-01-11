@@ -140,8 +140,13 @@ class SustainableSeafood::CLI
 
         puts ""
         puts "****** #{fish.name.upcase} ******".cyan.bold
-        #add boolean to check for aliases.nil?
-        puts WordWrap.ww "AKA: #{fish.aliases.join(", ")}", 80 || "No aliases" #this doesn't work - need different way to check for nil value in aliases array
+        
+        if !fish.aliases.empty?
+            puts WordWrap.ww "AKA: #{fish.aliases.join(", ")}", 80
+        else
+            puts "No aliases"
+        end
+
         puts ""
         puts WordWrap.ww fish.quote, 80
         puts ""
