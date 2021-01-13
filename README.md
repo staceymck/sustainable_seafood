@@ -6,25 +6,13 @@ Sustainability data is pulled via an API from FishWatch, the U.S. national datab
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'sustainable_seafood'
-```
-
-And then execute:
-
-    $ bundle install
-
-Or install it yourself as:
-
-    $ gem install sustainable_seafood
+Clone this repository and cd into the directory on your local environment.
 
 ## Usage
 
 Type the following in your terminal and follow the instructions:
 
-    $ sustainable_seafood
+    $ bin/sustainable_seafood
 
 ## Development
 
